@@ -1,4 +1,4 @@
-package com.example.mymatess;
+package com.example.mymatess.activity;
 
 
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mymatess.R;
+import com.example.mymatess.RecyclerViewDates;
 
 
 public class HomeActivity extends AppCompatActivity {
