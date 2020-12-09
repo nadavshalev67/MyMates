@@ -73,4 +73,8 @@ public class RecylerViewHobbies extends RecyclerView.Adapter<RecylerViewHobbies.
         mData = data;
         notifyDataSetChanged();
     }
+
+    public List<Hobbie> getList(){
+        return mData;
+    }
 }

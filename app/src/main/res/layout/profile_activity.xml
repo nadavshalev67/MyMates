@@ -39,7 +39,7 @@
         android:layout_marginRight="30dp">
 
         <EditText
-
+            android:id="@+id/full_name_et"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"

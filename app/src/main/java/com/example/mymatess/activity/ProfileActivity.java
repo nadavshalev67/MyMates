@@ -5,7 +5,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mymatess.Hobbie;
 import com.example.mymatess.R;
 import com.example.mymatess.recylers.RecylerViewHobbies;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,20 +26,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private RecylerViewHobbies mAdapter;
     private RecyclerView mRecyclerView;
-    private Spinner spinner;
+    private Spinner spinner, groupTeam;
+    private EditText fullName;
     private Button mContinueButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
         mContinueButton = findViewById(R.id.continue_button);
+        fullName = findViewById(R.id.full_name_et);
+        groupTeam = findViewById(R.id.spinner);
         mContinueButton.setOnClickListener(this);
         initSpinner();
         initRecyclerView();
@@ -45,7 +56,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_button: {
-
+                String email=firebaseUser.getEmail();
+                String fullname= fullName.getText().toString();
+                String groupteam = groupTeam.getSelectedItem().toString();
+                HashMap <String,String> hashMap = new HashMap<>();
+                HashMap <String,HashMap> hashMaphob = new HashMap<>();
+                HashMap <Integer,String > hashMapHobbies = new HashMap<>();
+                int i=1;
+                for (Hobbie temp : mAdapter.getList()) {
+                    if(temp.isChecked){
+                        hashMapHobbies.put(i, temp.toString());
+                        i++;
+                    }
+                }
+                hashMap.put("fullName",fullname);
+                hashMap.put("email",email);
+                hashMap.put("groupTeam",groupteam);
+                //hashMap.put("groupTeam",mAdapter.getList().toString());
+                //hashMaphob.put("hobbies",hashMapHobbies);
+                if(fullname.equals("")){
+                    Toast.makeText(ProfileActivity.this, "full name Failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                database.getReference("/Profile").child(firebaseUser.getUid()).setValue(hashMap);
+                //database.getReference("/Profile").child(firebaseUser.getUid()).child("hobbies").setValue(hashMaphob);
                 break;
             }
 
