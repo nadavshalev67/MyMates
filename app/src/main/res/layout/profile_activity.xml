@@ -53,16 +53,63 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Spinner
-        android:id="@+id/spinner_codespinner"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
+    <RelativeLayout
+        android:id="@+id/realtivelayout_spinner"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
         android:layout_below="@id/full_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
-        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/spinner_background"
         android:gravity="center"
-        android:spinnerMode="dropdown" />
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_arrow_drop_down_black_24dp" />
+
+    </RelativeLayout>
+
+    <TextView
+
+        android:id="@+id/optional"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/realtivelayout_spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Optional"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_hobbies"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/optional"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
 
 
 </RelativeLayout>

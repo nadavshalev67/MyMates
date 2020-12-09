@@ -18,6 +18,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
         mContinueButton = findViewById(R.id.continue_button);
+        mContinueButton.setOnClickListener(this);
 
     }
 
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intent);
                 break;
             }
+
 
         }
     }
