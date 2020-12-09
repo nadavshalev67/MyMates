@@ -2,6 +2,7 @@ package com.example.mymatess.activity;
 
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.example.mymatess.model.Date;
 import com.example.mymatess.model.PeopleDates;
 import com.example.mymatess.model.Profile;
 import com.example.mymatess.recylers.RecyclerViewDates;
+import com.example.mymatess.recylers.RecyclerViewPeople;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,17 +31,25 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements DateChangeListener {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private RecyclerView mRecyclerView;
-    private RecyclerViewDates mAdapter;
+
+
     private DataApplication mDataApplication = new DataApplication();
+    private TextView countPeopleTextView;
+    //Dates(of the top of the screen)
+    private RecyclerView mDatesRecyclerView;
+    private RecyclerViewDates mDatesAdapter;
+
+    private RecyclerView mPeopleDatesRecyclerView;
+    private RecyclerViewPeople mPeopleAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
-        initRecyclerView();
+        countPeopleTextView = findViewById(R.id.count_people);
         retriveAllDataFromFireBase();
+
     }
 
     private void retriveAllDataFromFireBase() {
@@ -53,7 +63,6 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -77,6 +86,7 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
 
                 }
                 mDataApplication.setPeopleDates(peopleDates);
+                initRecyclerView();
             }
 
             @Override
@@ -101,16 +111,32 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
 
 
     private void initRecyclerView() {
-        mRecyclerView = findViewById(R.id.recycler_view_dates);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        mAdapter = new RecyclerViewDates(this, mRecyclerView, this);
-        mRecyclerView.setAdapter(mAdapter);
+        initRecyclerDates();
+        initRecylerPerson();
+
+    }
+
+    private void initRecylerPerson() {
+        mPeopleDatesRecyclerView = findViewById(R.id.recycler_view_list_of_people);
+        mPeopleDatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mPeopleAdapter = new RecyclerViewPeople(this, mPeopleDatesRecyclerView);
+        mPeopleDatesRecyclerView.setAdapter(mPeopleAdapter);
+    }
+
+    private void initRecyclerDates() {
+        mDatesRecyclerView = findViewById(R.id.recycler_view_dates);
+        mDatesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mDatesAdapter = new RecyclerViewDates(this, mDatesRecyclerView, this);
+        mDatesRecyclerView.setAdapter(mDatesAdapter);
     }
 
 
     @Override
     public void onDateChangeListener(Date date) {
-
+        ArrayList<String> allPeople = mDataApplication.getAllPeople(date);
+        mPeopleAdapter.setNewList(allPeople);
+        String numberOfPeople = allPeople == null ? "0" : String.valueOf(allPeople.size());
+        countPeopleTextView.setText(numberOfPeople);
     }
 
     private Date parseDate(String date) {
