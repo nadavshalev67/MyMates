@@ -39,8 +39,6 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements DateChangeListener, View.OnClickListener {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-
     private DataApplication mDataApplication = new DataApplication();
     private TextView countPeopleTextView;
     private ImageView pieChartImageView;
@@ -51,24 +49,24 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
     private RecyclerView mPeopleDatesRecyclerView;
     private RecyclerViewPeople mPeopleAdapter;
 
-    //PieChar
     private PieChart mPieChartView;
     PieData pieData;
     PieDataSet pieDataSet;
-    ArrayList pieEntries;
-    ArrayList PieEntryLabels;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
+        mPeopleDatesRecyclerView = findViewById(R.id.recycler_view_list_of_people);
+        mDatesRecyclerView = findViewById(R.id.recycler_view_dates);
         countPeopleTextView = findViewById(R.id.count_people);
         countPeopleTextView.setOnClickListener(this);
         pieChartImageView = findViewById(R.id.piechart_image);
         pieChartImageView.setOnClickListener(this);
+        mPieChartView = findViewById(R.id.pieChartView);
         retriveAllDataFromFireBase();
-        initPieChar();
+
 
     }
 
@@ -107,6 +105,7 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                 }
                 mDataApplication.setPeopleDates(peopleDates);
                 initRecyclerView();
+                generatePieData(mDatesAdapter.getFirstPlace());
 
             }
 
@@ -117,23 +116,20 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
         });
     }
 
-    private void initPieChar() {
-        mPieChartView = findViewById(R.id.pieChartView);
-        getEntries();
-        pieDataSet = new PieDataSet(pieEntries, "");
+
+    private PieData generatePieData(Date date) {
+        HashMap<String, Integer> mapOfHobbies = mDataApplication.getAllHobbies(date);
+        pieDataSet = new PieDataSet(genereateEntries(mapOfHobbies), "");
         pieData = new PieData(pieDataSet);
-
-
         pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         pieDataSet.setSliceSpace(2f);
-        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setValueTextSize(10f);
         pieDataSet.setSliceSpace(5f);
-
-
         mPieChartView.setData(pieData);
-
-
+        mPieChartView.notifyDataSetChanged();
+        mPieChartView.invalidate();
+        return pieData;
     }
 
     private void fetchProfiles(DataSnapshot dataSnapshot) {
@@ -153,18 +149,17 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
     private void initRecyclerView() {
         initRecyclerDates();
         initRecylerPerson();
-
+        mPeopleDatesRecyclerView.setVisibility(View.VISIBLE);
+        mPieChartView.setVisibility(View.INVISIBLE);
     }
 
     private void initRecylerPerson() {
-        mPeopleDatesRecyclerView = findViewById(R.id.recycler_view_list_of_people);
         mPeopleDatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mPeopleAdapter = new RecyclerViewPeople(this, mPeopleDatesRecyclerView);
         mPeopleDatesRecyclerView.setAdapter(mPeopleAdapter);
     }
 
     private void initRecyclerDates() {
-        mDatesRecyclerView = findViewById(R.id.recycler_view_dates);
         mDatesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mDatesAdapter = new RecyclerViewDates(this, mDatesRecyclerView, this);
         mDatesRecyclerView.setAdapter(mDatesAdapter);
@@ -177,6 +172,10 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
         mPeopleAdapter.setNewList(allPeople);
         String numberOfPeople = allPeople == null ? "0" : String.valueOf(allPeople.size());
         countPeopleTextView.setText(numberOfPeople);
+        generatePieData(date);
+        mPeopleDatesRecyclerView.setVisibility(View.VISIBLE);
+        mPieChartView.setVisibility(View.INVISIBLE);
+
     }
 
     private Date parseDate(String date) {
@@ -187,14 +186,18 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
         return new Date(day, month, year, false);
     }
 
-    private void getEntries() {
-        pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(2f, "nadav"));
-        pieEntries.add(new PieEntry(4f, "shalev"));
-        pieEntries.add(new PieEntry(6f, "bla"));
-        pieEntries.add(new PieEntry(8f, "sdfa"));
-        pieEntries.add(new PieEntry(7f, "safda"));
-        pieEntries.add(new PieEntry(3f, "asdfa"));
+    private ArrayList genereateEntries(HashMap<String, Integer> map) {
+        ArrayList pieEntries = new ArrayList<>();
+        if (map != null) {
+            Iterator it = map.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                String key = (String) pair.getKey();
+                Integer value = (Integer) pair.getValue();
+                pieEntries.add(new PieEntry(value.floatValue(), key));
+            }
+        }
+        return pieEntries;
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.example.mymatess.interfaces.DateChangeListener;
 import com.example.mymatess.model.Date;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.ViewHolder> {
@@ -29,18 +30,32 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
     public RecyclerViewDates(Context context, RecyclerView recyclerView, DateChangeListener dateChangeListener) {
         this.mInflater = LayoutInflater.from(context);
         this.mRecyclerView = recyclerView;
-        mData.add(new Date(9, 12, 20, true));
-        mData.add(new Date(10, 12, 20, false));
-        mData.add(new Date(11, 12, 20, false));
-        mData.add(new Date(12, 12, 20, false));
-        mData.add(new Date(13, 12, 20, false));
-        mData.add(new Date(14, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
-        mData.add(new Date(15, 12, 20, false));
+        Calendar calendar = Calendar.getInstance();
+        mData.add(new Date(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR), true));
+        calendar.add(Calendar.DATE, 1);
+        int thuresdayFlag = 0;
+        for (int i = 0; i < 15; i++) { //rest of the week
+            System.out.println("The date is  " + calendar.getTime());
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            String dayOfMonthStr = String.valueOf(dayOfMonth);
+            System.out.println("The day is  " + dayOfMonthStr);
+            int MonthOfYear = calendar.get(Calendar.MONTH) + 1;
+            String MonthOfYearSTR = String.valueOf(MonthOfYear);
+            System.out.println("The Month is  " + MonthOfYearSTR);
+            int Year = calendar.get(Calendar.YEAR);
+            String YearSTR = String.valueOf(Year);
+            String CutString = YearSTR.substring(2, 4);
+            System.out.println("The year is  " + CutString);
+            calendar.add(Calendar.DATE, 1);
+            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == calendar.FRIDAY)
+                thuresdayFlag++;
+            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 != 0) {
+                mData.add(new Date(dayOfMonth, MonthOfYear, Integer.valueOf(CutString), false));
+            }
+            if (thuresdayFlag == 2) break;
+        }
+
+
         mListener = dateChangeListener;
     }
 
@@ -97,5 +112,9 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
     public void setNewList(List<Date> data) {
         mData = data;
         notifyDataSetChanged();
+    }
+
+    public Date getFirstPlace() {
+        return mData.get(0);
     }
 }
