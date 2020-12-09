@@ -1,8 +1,7 @@
 package com.example.mymatess.interfaces;
 
-import com.example.mymatess.Date;
+import com.example.mymatess.model.Date;
 
 public interface DateChangeListener {
-
-    public void onDateChangeListener(Date date);
+    void onDateChangeListener(Date date);
 }

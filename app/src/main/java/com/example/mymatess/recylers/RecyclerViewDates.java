@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymatess.Date;
 import com.example.mymatess.R;
 import com.example.mymatess.interfaces.DateChangeListener;
+import com.example.mymatess.model.Date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
 
     private List<Date> mData = new ArrayList<>();
     private LayoutInflater mInflater;
-    private Context mContext;
     private RecyclerView mRecyclerView;
     private DateChangeListener mListener;
 
@@ -42,7 +41,6 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
         mData.add(new Date(15, 12, 20, false));
         mData.add(new Date(15, 12, 20, false));
         mData.add(new Date(15, 12, 20, false));
-        mContext = context;
         mListener = dateChangeListener;
     }
 
