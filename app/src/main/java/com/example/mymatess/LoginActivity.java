@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_button: {
+
                 break;
             }
             case R.id.forgot_yourt_password: {
