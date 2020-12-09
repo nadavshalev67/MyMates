@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymatess.Date;
 import com.example.mymatess.R;
+import com.example.mymatess.interfaces.DateChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,10 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
     private LayoutInflater mInflater;
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private DateChangeListener mListener;
 
 
-    public RecyclerViewDates(Context context, RecyclerView recyclerView) {
+    public RecyclerViewDates(Context context, RecyclerView recyclerView, DateChangeListener dateChangeListener) {
         this.mInflater = LayoutInflater.from(context);
         this.mRecyclerView = recyclerView;
         mData.add(new Date(9, 12, 20, true));
@@ -41,6 +43,7 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
         mData.add(new Date(15, 12, 20, false));
         mData.add(new Date(15, 12, 20, false));
         mContext = context;
+        mListener = dateChangeListener;
     }
 
     @NonNull
@@ -54,7 +57,9 @@ public class RecyclerViewDates extends RecyclerView.Adapter<RecyclerViewDates.Vi
                 for (Date date : mData) {
                     date.mIsChecked = false;
                 }
-                mData.get(itemPosition).mIsChecked = true;
+                Date date = mData.get(itemPosition);
+                date.mIsChecked = true;
+                mListener.onDateChangeListener(date);
                 notifyDataSetChanged();
             }
         });

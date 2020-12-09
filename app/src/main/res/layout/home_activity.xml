@@ -57,11 +57,18 @@
 
         android:background="@color/green" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <RelativeLayout
+        android:id="@+id/list_of_people"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" />
+
+
+    <RelativeLayout
+        android:id="@+id/pie_charts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_marginTop="5dp" />
+        android:visibility="invisible" />
 
 </RelativeLayout>

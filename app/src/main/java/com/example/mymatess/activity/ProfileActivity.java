@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymatess.Hobbie;
 import com.example.mymatess.R;
-import com.example.mymatess.RecylerViewHobbies;
+import com.example.mymatess.recylers.RecylerViewHobbies;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
