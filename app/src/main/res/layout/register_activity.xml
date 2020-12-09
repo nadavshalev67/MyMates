@@ -40,7 +40,7 @@
                 android:background="@color/white"
                 android:drawablePadding="16dp"
                 android:hint="Email"
-                android:inputType="textPassword"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingBottom="20dp"
                 android:textColor="@android:color/black"
@@ -78,7 +78,7 @@
             android:textColorHint="@color/red">
 
             <EditText
-                android:id="@+id/config_password"
+                android:id="@+id/confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
