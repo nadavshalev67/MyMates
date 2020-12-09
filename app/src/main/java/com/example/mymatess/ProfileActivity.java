@@ -35,7 +35,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mContinueButton = findViewById(R.id.continue_button);
         mContinueButton.setOnClickListener(this);
         initSpinner();
-
         initRecyclerView();
     }
 
