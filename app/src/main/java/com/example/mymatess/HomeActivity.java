@@ -3,17 +3,13 @@ package com.example.mymatess;
 
 import android.os.Bundle;
 
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import java.util.ArrayList;
-
-
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerViewDates mAdapter;
 
@@ -26,17 +22,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View view) {
-
-    }
-
     private void initRecyclerView() {
-        final ArrayList<Hobbie> hobbies = new ArrayList();
         mRecyclerView = findViewById(R.id.recycler_view_dates);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mAdapter = new RecyclerViewDates(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 }

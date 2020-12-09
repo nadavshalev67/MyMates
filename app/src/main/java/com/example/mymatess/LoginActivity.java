@@ -59,13 +59,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     */
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_button: {
-                 String email= mEmail.getText().toString();
-                 String password= mPassword.getText().toString();
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
 
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -76,23 +75,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Log.d(password, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-
-                                    // updateUI(user);
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(password, "signInWithEmail:failure", task.getException());
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    //updateUI(null);
-                                    // ...
-                                }
 
-                                // ...
+                                }
                             }
                         });
-
-
                 break;
             }
             case R.id.forgot_yourt_password: {

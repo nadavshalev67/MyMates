@@ -10,5 +10,58 @@
         android:layout_width="match_parent"
         android:layout_height="60dp" />
 
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/recycler_view_dates"
+        android:background="@color/green" />
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/seperator"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/count_people"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowRadius="10.0"
+            android:text="4"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <ImageView
+
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/count_people"
+            android:background="@drawable/ic_chart" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/seperator2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/toolbar"
+
+        android:background="@color/green" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="5dp" />
 
 </RelativeLayout>
