@@ -111,5 +111,19 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_view_hobbies"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/green"
+        android:text="Continue">
+
+
+    </com.google.android.material.button.MaterialButton>
+
+
+
 
 </RelativeLayout>

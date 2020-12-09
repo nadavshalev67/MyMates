@@ -26,12 +26,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private RecylerViewHobbies mAdapter;
     private RecyclerView mRecyclerView;
     private Spinner spinner;
+    private Button mContinueButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
+        mContinueButton = findViewById(R.id.continue_button);
+        mContinueButton.setOnClickListener(this);
         initSpinner();
+
         initRecyclerView();
     }
 
@@ -39,7 +43,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.continue_button: {
 
+                break;
+            }
 
         }
     }
@@ -74,8 +81,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
-
     }
 
     private void initRecyclerView() {
@@ -102,4 +107,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
     }
+
+
 }
