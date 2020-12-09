@@ -39,7 +39,7 @@
             android:textSize="18sp" />
 
         <ImageView
-
+            android:id="@+id/piechart_image"
             android:layout_width="33dp"
             android:layout_height="33dp"
             android:layout_marginLeft="20dp"
@@ -54,21 +54,21 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/toolbar"
-
         android:background="@color/green" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_list_of_people"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar" />
+        android:layout_below="@id/toolbar"
+        android:visibility="invisible" />
 
 
-    <RelativeLayout
-        android:id="@+id/pie_charts"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChartView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:visibility="invisible" />
+        />
 
 </RelativeLayout>

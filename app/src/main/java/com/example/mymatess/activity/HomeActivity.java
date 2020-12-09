@@ -1,7 +1,10 @@
 package com.example.mymatess.activity;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -17,6 +20,11 @@ import com.example.mymatess.model.PeopleDates;
 import com.example.mymatess.model.Profile;
 import com.example.mymatess.recylers.RecyclerViewDates;
 import com.example.mymatess.recylers.RecyclerViewPeople;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,18 +37,26 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class HomeActivity extends AppCompatActivity implements DateChangeListener {
+public class HomeActivity extends AppCompatActivity implements DateChangeListener, View.OnClickListener {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     private DataApplication mDataApplication = new DataApplication();
     private TextView countPeopleTextView;
-    //Dates(of the top of the screen)
+    private ImageView pieChartImageView;
+
     private RecyclerView mDatesRecyclerView;
     private RecyclerViewDates mDatesAdapter;
 
     private RecyclerView mPeopleDatesRecyclerView;
     private RecyclerViewPeople mPeopleAdapter;
+
+    //PieChar
+    private PieChart mPieChartView;
+    PieData pieData;
+    PieDataSet pieDataSet;
+    ArrayList pieEntries;
+    ArrayList PieEntryLabels;
 
 
     @Override
@@ -48,7 +64,11 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         countPeopleTextView = findViewById(R.id.count_people);
+        countPeopleTextView.setOnClickListener(this);
+        pieChartImageView = findViewById(R.id.piechart_image);
+        pieChartImageView.setOnClickListener(this);
         retriveAllDataFromFireBase();
+        initPieChar();
 
     }
 
@@ -87,6 +107,7 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                 }
                 mDataApplication.setPeopleDates(peopleDates);
                 initRecyclerView();
+
             }
 
             @Override
@@ -94,6 +115,25 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
 
             }
         });
+    }
+
+    private void initPieChar() {
+        mPieChartView = findViewById(R.id.pieChartView);
+        getEntries();
+        pieDataSet = new PieDataSet(pieEntries, "");
+        pieData = new PieData(pieDataSet);
+
+
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setSliceSpace(2f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(10f);
+        pieDataSet.setSliceSpace(5f);
+
+
+        mPieChartView.setData(pieData);
+
+
     }
 
     private void fetchProfiles(DataSnapshot dataSnapshot) {
@@ -145,5 +185,35 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
         int month = Integer.parseInt(arry[1]);
         int year = Integer.parseInt(arry[2]);
         return new Date(day, month, year, false);
+    }
+
+    private void getEntries() {
+        pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(2f, "nadav"));
+        pieEntries.add(new PieEntry(4f, "shalev"));
+        pieEntries.add(new PieEntry(6f, "bla"));
+        pieEntries.add(new PieEntry(8f, "sdfa"));
+        pieEntries.add(new PieEntry(7f, "safda"));
+        pieEntries.add(new PieEntry(3f, "asdfa"));
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.count_people: {
+                if (mPeopleDatesRecyclerView != null && mPieChartView != null) {
+                    mPeopleDatesRecyclerView.setVisibility(View.VISIBLE);
+                    mPieChartView.setVisibility(View.INVISIBLE);
+                }
+                break;
+            }
+            case R.id.piechart_image: {
+                if (mPeopleDatesRecyclerView != null && mPieChartView != null) {
+                    mPeopleDatesRecyclerView.setVisibility(View.INVISIBLE);
+                    mPieChartView.setVisibility(View.VISIBLE);
+                }
+                break;
+            }
+        }
     }
 }
