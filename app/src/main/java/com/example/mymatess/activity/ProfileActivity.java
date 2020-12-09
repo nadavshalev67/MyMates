@@ -1,5 +1,6 @@
 package com.example.mymatess.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,8 @@ import com.example.mymatess.Hobbie;
 import com.example.mymatess.R;
 import com.example.mymatess.recylers.RecylerViewHobbies;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,30 +60,38 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_button: {
-                String email=firebaseUser.getEmail();
-                String fullname= fullName.getText().toString();
+                String email = firebaseUser.getEmail();
+                String fullname = fullName.getText().toString();
                 String groupteam = groupTeam.getSelectedItem().toString();
-                HashMap <String,String> hashMap = new HashMap<>();
-                HashMap <String,HashMap> hashMaphob = new HashMap<>();
-                HashMap <Integer,String > hashMapHobbies = new HashMap<>();
-                int i=1;
+                HashMap<String, String> hashMap = new HashMap<>();
+                HashMap<String, String> hashMapHobbies = new HashMap<>();
+                int i = 1;
                 for (Hobbie temp : mAdapter.getList()) {
-                    if(temp.isChecked){
-                        hashMapHobbies.put(i, temp.toString());
+                    if (temp.isChecked) {
+                        hashMapHobbies.put(String.valueOf(i), temp.name);
                         i++;
                     }
                 }
-                hashMap.put("fullName",fullname);
-                hashMap.put("email",email);
-                hashMap.put("groupTeam",groupteam);
-                //hashMap.put("groupTeam",mAdapter.getList().toString());
-                //hashMaphob.put("hobbies",hashMapHobbies);
-                if(fullname.equals("")){
+                hashMap.put("fullName", fullname);
+                hashMap.put("email", email);
+                hashMap.put("groupTeam", groupteam);
+                if (fullname.equals("")) {
                     Toast.makeText(ProfileActivity.this, "full name Failed", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                database.getReference("/Profile").child(firebaseUser.getUid()).setValue(hashMap);
-                //database.getReference("/Profile").child(firebaseUser.getUid()).child("hobbies").setValue(hashMaphob);
+                database.getReference("/Profile").child(firebaseUser.getUid()).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        database.getReference("/Profile").child(firebaseUser.getUid()).child("hobbies").setValue(hashMapHobbies).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+
                 break;
             }
 

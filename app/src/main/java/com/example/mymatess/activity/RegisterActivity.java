@@ -24,12 +24,13 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mContinueButton;
-    EditText mEmail, mPassword,mConfirmPassword;
+    EditText mEmail, mPassword, mConfirmPassword;
     private FirebaseAuth mAuth;
     private static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#%&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mContinueButton.setOnClickListener(this);
 
     }
+
     public static boolean isValid(final String password) {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
@@ -53,20 +55,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_button: {
-                String email= mEmail.getText().toString();
-                String password= mPassword.getText().toString();
-                String confirmPassword= mConfirmPassword.getText().toString();
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+                String confirmPassword = mConfirmPassword.getText().toString();
 
 
-                if(!email.substring(email.length()-10).equals("@fyber.com") || password.length()<8){
+                if (!email.substring(email.length() - 10).equals("@fyber.com") || password.length() < 8) {
                     Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!isValid(password)){
-                    Toast.makeText(RegisterActivity.this, "Regex Failed", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(password.equals(confirmPassword) ){
+
+                if (password.equals(confirmPassword)) {
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -77,19 +76,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
                                         startActivity(intent);
-//                                        updateUI(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.d("createUserWithEmail", "createUserWithEmail:success");
                                         Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
-//                                        updateUI(null);
                                     }
 
                                     // ...
                                 }
                             });
-                }else{
+                } else {
                     Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
                 }
 

@@ -3,11 +3,15 @@ package com.example.mymatess.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,11 +29,15 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +46,7 @@ import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity implements DateChangeListener, View.OnClickListener {
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DataApplication mDataApplication = new DataApplication();
     private TextView countPeopleTextView;
@@ -52,12 +61,16 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
     private PieChart mPieChartView;
     PieData pieData;
     PieDataSet pieDataSet;
+    Date mDate = null;
+    private Button addMeButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
+        addMeButton = findViewById(R.id.add_me_button);
+        addMeButton.setOnClickListener(this);
         mPeopleDatesRecyclerView = findViewById(R.id.recycler_view_list_of_people);
         mDatesRecyclerView = findViewById(R.id.recycler_view_dates);
         countPeopleTextView = findViewById(R.id.count_people);
@@ -105,6 +118,7 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                 }
                 mDataApplication.setPeopleDates(peopleDates);
                 initRecyclerView();
+                mDate = mDatesAdapter.getFirstPlace();
                 generatePieData(mDatesAdapter.getFirstPlace());
 
             }
@@ -168,6 +182,7 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
 
     @Override
     public void onDateChangeListener(Date date) {
+        mDate = date;
         ArrayList<String> allPeople = mDataApplication.getAllPeople(date);
         mPeopleAdapter.setNewList(allPeople);
         String numberOfPeople = allPeople == null ? "0" : String.valueOf(allPeople.size());
@@ -216,6 +231,36 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                     mPieChartView.setVisibility(View.VISIBLE);
                 }
                 break;
+            }
+            case R.id.add_me_button: {
+                if (mDate == null) {
+                    return;
+
+                }
+                final DatabaseReference ref = database.getReference("dates").child(mDate.toString());
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String uuid = (String) snapshot.getValue();
+                            if (TextUtils.equals(uuid, firebaseUser.getUid())) {
+                                Toast.makeText(getApplicationContext(), "You are already registered to this date", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                        HashMap<String, String> hashMap = new HashMap<>();
+                        hashMap.put(String.valueOf(mDate.hashCode()), firebaseUser.getUid());
+                        ref.setValue(hashMap);
+                        Toast.makeText(getApplicationContext(), "You have been added - calander is refreshed", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         }
     }

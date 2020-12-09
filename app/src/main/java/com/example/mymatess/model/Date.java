@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 public class Date {
     public int day;
     public int month;
+
+
     public int year;
     public boolean mIsChecked;
 
@@ -22,5 +24,10 @@ public class Date {
         this.month = month;
         this.year = year;
         mIsChecked = isChecked;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d-%d-%d", day, month, year);
     }
 }
