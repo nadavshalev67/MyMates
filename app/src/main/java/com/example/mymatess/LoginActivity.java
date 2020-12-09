@@ -1,5 +1,6 @@
 package com.example.mymatess;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mLogin = findViewById(R.id.login_button);
         mLogin.setOnClickListener(this);
         mRegister = findViewById(R.id.register_button);
+        mRegister.setOnClickListener(this);
         mForgotYourPassword = findViewById(R.id.forgot_yourt_password);
     }
 
@@ -38,6 +40,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  
                 break;
             }
+            case R.id.forgot_yourt_password: {
+
+                break;
+            }
+            case R.id.register_button: {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            }
+
         }
     }
 }

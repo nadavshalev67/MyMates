@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/profile_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Profile"
+        android:textColor="@color/green"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mandatory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Mandatory"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mandatory"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="30dp">
+
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:drawablePadding="16dp"
+            android:gravity="center"
+            android:hint="Full name"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/spinner_codespinner"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_below="@id/full_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:spinnerMode="dropdown" />
+
+
+</RelativeLayout>
