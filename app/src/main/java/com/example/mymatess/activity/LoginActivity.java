@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText mEmail, mPassword;
     TextView mForgotYourPassword;
     Button mLogin, mRegister;
-
     private FirebaseAuth mAuth;
 
 
@@ -42,23 +41,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mRegister = findViewById(R.id.register_button);
         mRegister.setOnClickListener(this);
         mForgotYourPassword = findViewById(R.id.forgot_yourt_password);
-
         mAuth = FirebaseAuth.getInstance();
 
     }
-
-    /*
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void updateUI(FirebaseUser currentUser) {
-    }
-    */
 
 
     @Override
