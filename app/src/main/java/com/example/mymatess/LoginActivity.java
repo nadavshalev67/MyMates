@@ -36,6 +36,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             }
+            case R.id.forgot_yourt_password: {
+
+                break;
+            }
+
         }
     }
 }
