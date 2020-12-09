@@ -18,12 +18,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mContinueButton;
     EditText mEmail, mPassword,mConfirmPassword;
     private FirebaseAuth mAuth;
+    private static final String PASSWORD_PATTERN =
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#%&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
+    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +44,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mContinueButton.setOnClickListener(this);
 
     }
-
+    public static boolean isValid(final String password) {
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
 
     @Override
     public void onClick(View view) {
@@ -48,8 +57,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String password= mPassword.getText().toString();
                 String confirmPassword= mConfirmPassword.getText().toString();
 
-                if(!email.substring(email.length()-10).equals("@fyber.com")){
-                    Toast.makeText(RegisterActivity.this, "Email Failed", Toast.LENGTH_SHORT).show();
+
+                if(!email.substring(email.length()-10).equals("@fyber.com") || password.length()<8){
+                    Toast.makeText(RegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!isValid(password)){
+                    Toast.makeText(RegisterActivity.this, "Regex Failed", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(password.equals(confirmPassword) ){
@@ -75,9 +89,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     // ...
                                 }
                             });
-                    }else{
-                        Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
-                    }
+                }else{
+                    Toast.makeText(this, "Password Doesn't Match", Toast.LENGTH_SHORT).show();
+                }
 
 
                 break;
