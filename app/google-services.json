@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "775509131931",
+    "project_id": "mymateshack",
+    "storage_bucket": "mymateshack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:775509131931:android:d8fc9bb2f495398ed77c3e",
+        "android_client_info": {
+          "package_name": "com.example.mymatess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "775509131931-34ilc7rtbb533bl277ab9v2o791v0c4t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0vI60qRU6VGsazswwWod4dGy3irlI_Dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "775509131931-34ilc7rtbb533bl277ab9v2o791v0c4t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
