@@ -42,6 +42,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mForgotYourPassword = findViewById(R.id.forgot_yourt_password);
         mAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+        } else {
+            Log.d("UserLoginNull", "null user");
+        }
+
+
     }
 
 
