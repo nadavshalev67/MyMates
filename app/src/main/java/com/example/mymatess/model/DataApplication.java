@@ -53,11 +53,13 @@ public class DataApplication {
             for (String uuid : listOfUuids) {
                 if (TextUtils.equals(profile.uuid, uuid)) {
                     List<String> hobbies = profile.hobbies;
-                    for (String hobbie : hobbies) {
-                        int number = result.get(hobbie) == null ? 0 : result.get(hobbie);
-                        number++;
-                        if (!TextUtils.isEmpty(hobbie)) {
-                            result.put(hobbie, number);
+                    if (hobbies != null) {
+                        for (String hobbie : hobbies) {
+                            int number = result.get(hobbie) == null ? 0 : result.get(hobbie);
+                            number++;
+                            if (!TextUtils.isEmpty(hobbie)) {
+                                result.put(hobbie, number);
+                            }
                         }
                     }
 
