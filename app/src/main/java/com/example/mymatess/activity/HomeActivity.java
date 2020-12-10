@@ -249,6 +249,11 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> postValues = new HashMap<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            postValues.put(snapshot.getKey(), snapshot.getValue());
+                        }
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             String uuid = (String) snapshot.getValue();
                             if (TextUtils.equals(uuid, firebaseUser.getUid())) {
@@ -256,9 +261,9 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
                                 return;
                             }
                         }
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put(String.valueOf(mDate.hashCode()), firebaseUser.getUid());
-                        ref.setValue(hashMap);
+
+                        postValues.put(String.valueOf(mDate.hashCode()), firebaseUser.getUid());
+                        ref.setValue(postValues);
                         Toast.makeText(getApplicationContext(), "You have been added - calander is refreshed", Toast.LENGTH_LONG).show();
 
                     }
