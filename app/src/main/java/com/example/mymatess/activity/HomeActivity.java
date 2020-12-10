@@ -1,6 +1,7 @@
 package com.example.mymatess.activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -64,6 +65,13 @@ public class HomeActivity extends AppCompatActivity implements DateChangeListene
     Date mDate = null;
     private Button addMeButton;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
